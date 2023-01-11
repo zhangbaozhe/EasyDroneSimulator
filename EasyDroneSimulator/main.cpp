@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "QuadrotorSimulator.h"
+#include "DisplayHandler.h"
 
 using namespace ez_drone_sim;
 
@@ -75,9 +76,10 @@ int main() {
   QuadrotorSystem::State_t x0 = QuadrotorSystem::State_t::Zero();
   x0 = traj_pair.first.at(0);
   double duration = 20.0 + 2.0;
-  QuadrotorSimulator simulator(0.005, 0.05, x0, quad_system_ptr);
-  simulator.setReferenceInput(traj_pair.second);
-  simulator.setInputPlan(input_plan);
-  simulator.simulate(duration);
-  simulator.finish();
+  auto simulator = std::make_shared<QuadrotorSimulator>(0.005, 0.05, x0, quad_system_ptr);
+  simulator->setReferenceInput(traj_pair.second);
+  simulator->setInputPlan(input_plan);
+  DisplayHandler display(simulator, "Simulator");
+  simulator->simulate(duration);
+  simulator->finish();
 }

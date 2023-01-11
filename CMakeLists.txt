@@ -22,7 +22,10 @@ endif()
 include_directories(
     ${Eigen_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/EasyDroneSimulator/include
+    ${Pangolin_INCLUDE_DIRS}
 )
 
 
 add_executable(EasyDroneSimulator EasyDroneSimulator/main.cpp)
+target_link_libraries(EasyDroneSimulator
+    ${Pangolin_LIBRARIES})

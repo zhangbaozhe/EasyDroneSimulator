@@ -27,6 +27,16 @@ class QuadrotorSimulator : public NumericalSimulator<QuadrotorSystem> {
   {
   }
 
+  State_t getState()
+  {
+    return x_;
+  }
+
+  bool isFinished()
+  {
+    return !system_thread_.joinable() && !control_thread_.joinable();
+  }
+
   // FIXME: if this virtual destructor is not specified or
   // finish() is not called (i.e., the threads are joined because of the destructor)
   // then the following overriden functions are not properly dispatched
