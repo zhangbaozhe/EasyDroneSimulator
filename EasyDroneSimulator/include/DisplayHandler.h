@@ -11,53 +11,6 @@
 namespace ez_drone_sim
 {
 
-
-struct RotationMatrix {
-  Eigen::Matrix3d matrix = Eigen::Matrix3d::Identity();
-};
-
-inline std::ostream &operator<<(std::ostream &out, const RotationMatrix &r) {
-  out.setf(std::ios::fixed);
-  Eigen::Matrix3d matrix = r.matrix;
-  out << '=';
-  out << "[" << std::setprecision(2) << matrix(0, 0) << "," << matrix(0, 1) << "," << matrix(0, 2) << "],\n"
-      << "[" << matrix(1, 0) << "," << matrix(1, 1) << "," << matrix(1, 2) << "],\n"
-      << "[" << matrix(2, 0) << "," << matrix(2, 1) << "," << matrix(2, 2) << "]";
-  return out;
-}
-
-inline std::istream &operator>>(std::istream &in, RotationMatrix &r) {
-  return in;
-}
-
-struct TranslationVector {
-  Eigen::Vector3d trans = Eigen::Vector3d(0, 0, 0);
-};
-
-inline std::ostream &operator<<(std::ostream &out, const TranslationVector &t) {
-  out << "=[" << t.trans(0) << ',' << t.trans(1) << ',' << t.trans(2) << "]";
-  return out;
-}
-
-inline std::istream &operator>>(std::istream &in, TranslationVector &t) {
-  return in;
-}
-
-struct QuaternionDraw {
-  Eigen::Quaterniond q;
-};
-
-inline std::ostream &operator<<(std::ostream &out, const QuaternionDraw quat) {
-  auto c = quat.q.coeffs();
-  out << "=[" << c[0] << "," << c[1] << "," << c[2] << "," << c[3] << "]";
-  return out;
-}
-
-inline std::istream &operator>>(std::istream &in, const QuaternionDraw quat) {
-  return in;
-}
-
-
 class DisplayHandler
 {
  public:
@@ -80,7 +33,6 @@ class DisplayHandler
  private:
   std::shared_ptr<QuadrotorSimulator> quad_simulator_ptr_;
   std::string window_name_;
-  std::thread display_thread_;
   bool isFinish = false;
 };
 
@@ -91,11 +43,12 @@ void DisplayHandler::startDisplay() {
   glEnable(GL_DEPTH_TEST);
   pangolin::OpenGlRenderState s_cam(
       pangolin::ProjectionMatrix(width, height, 420, 420, 500, 300, 0.1, 1000),
-      pangolin::ModelViewLookAt(-10, -10, 50, 0, 0, 0, pangolin::AxisZ)
+      pangolin::ModelViewLookAt(10, -1, 50, 0, 0, 0, pangolin::AxisZ)
       );
   const int UI_WIDTH = 500;
 
   pangolin::View &d_cam = pangolin::CreateDisplay().
+      SetBounds(0.0, 1.0, 0.0, 1.0, -640.0f/480.0f).
       SetHandler(new pangolin::Handler3D(s_cam));
 
 

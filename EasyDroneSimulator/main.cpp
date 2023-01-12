@@ -66,6 +66,7 @@ GenerateCircleTrajectory(size_t sample_num, double R, double omega, double durat
 int main() {
   auto traj_pair = GenerateCircleTrajectory(10000, 2.0, 3.14, 20, 1.0);
   auto quad_system_ptr = std::make_shared<QuadrotorSystem>("Quadrotor");
+  // this `input_plan` can be used as a controller
   auto input_plan = [](double time, double duration, size_t sample_num,
       const QuadrotorSystem::StateArray_t &, const QuadrotorSystem::InputArray_t &input_trajectory)-> QuadrotorSystem::Control_t
   {
@@ -76,7 +77,7 @@ int main() {
   QuadrotorSystem::State_t x0 = traj_pair.first.at(0);
 
   double duration = 20.0 + 2.0;
-  auto simulator = std::make_shared<QuadrotorSimulator>( 1.0 / 24.0, 1.0 / 24.0, x0, quad_system_ptr);
+  auto simulator = std::make_shared<QuadrotorSimulator>( 1 / 24.0, 1 / 24.0, x0, quad_system_ptr);
   simulator->setReferenceInput(traj_pair.second);
   simulator->setInputPlan(input_plan);
   DisplayHandler display(simulator, "Simulator");
