@@ -85,8 +85,8 @@ class QuadrotorSimulator : public NumericalSimulator<QuadrotorSystem> {
  private:
   QuadrotorSystem::StateArray_t reference_trajectory_;
   QuadrotorSystem::InputArray_t reference_input_;
-  size_t trajectory_sample_num_;
-  double trajectory_duration_;
+  size_t trajectory_sample_num_ = 10000;
+  double trajectory_duration_ = 20;
   std::function<State_t(double, double, size_t, const QuadrotorSystem::StateArray_t &, const QuadrotorSystem::InputArray_t &)>
       state_plan_;
   std::function<Control_t(double, double, size_t, const QuadrotorSystem::StateArray_t &, const QuadrotorSystem::InputArray_t &)>

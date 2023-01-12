@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 project(EasyDroneSimulator)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 if (WIN32)
     find_package(Eigen3 CONFIG REQUIRED)
@@ -15,6 +15,9 @@ if (WIN32)
 else()
     find_package(Eigen3 REQUIRED)
     find_package(gflags REQUIRED)
+    if (MACOS)
+        set(Pangolin_DIR /usr/local/)
+    endif()
     find_package(Pangolin REQUIRED)
     find_package(Boost REQUIRED)
 endif()
